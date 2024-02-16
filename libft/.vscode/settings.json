@@ -1,0 +1,13 @@
+{
+"editor.tabSize": 4,
+"editor.insertSpaces": false,
+"editor.detectIndentation": false,
+"editor.renderWhitespace": "all",
+"files.trimTrailingWhitespace": true,
+"files.insertFinalNewline": true,
+"files.associations": {
+	"ft_memcpy": "c",
+	"stdlib.h": "c",
+	"*.a": "c"
+},
+}
