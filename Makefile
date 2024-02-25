@@ -5,12 +5,12 @@ CFLAGS = -Wall -Wextra -Werror
 
 ############################Sources########################
 SRCS_DIR = sources/
-FILES = pipex.c \
+FILES = pipex.c childs.c utils.c manage_error.c\
 
 SRCS = $(addprefix $(SRCS_DIR), $(FILES))
 
 #BONUS_DIR = sources/bonus/
-#FILES_BONUS = 
+#FILES_BONUS =
 
 #SRCS_BONUS = $(addprefix $(BONUS_DIR), $(FILES_BONUS))
 
