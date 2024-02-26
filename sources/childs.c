@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@42student.fr>               +#+  +:+       +#+        */
+/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:55:14 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/25 16:47:24 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/02/26 17:14:17 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ char	*get_command(char **path_tab, char *cmd_name)
 	return (NULL);
 }
 
-int	child_number_one(t_pipex ppx, char **argv, char **envp)
+void	child_number_one(t_pipex ppx, char **argv, char **envp)
 {
 	dup2(ppx.fd1, STDIN_FILENO);
 	dup2(ppx.pipefd[1], STDOUT_FILENO);
 	close_pipes(ppx);
 	ppx.i = 0;
+	ppx.cmd = ft_split(argv[2], ' ');
 	if (argv[2][0] != ' ')
 	{
-		ppx.cmd = ft_split(argv[2], ' ');
 		while(ppx.cmd[ppx.i])
 		{
 			ppx.ar[ppx.i] = ppx.cmd[ppx.i];
@@ -61,23 +61,18 @@ int	child_number_one(t_pipex ppx, char **argv, char **envp)
 		if (!ppx.path)
 			print_error_msg_3(ERR_CMD, ppx.ar[0], ppx);
 	}
-	if(execve(ppx.path, ppx.ar, envp) == -1)
-	{
-		free_all(ppx);
-		return(127);
-	}
-	return (1);
+	execve(ppx.path, ppx.ar, envp);
 }
 
-int	child_number_two(t_pipex ppx, char **argv, char **envp)
+void	child_number_two(t_pipex ppx, char **argv, char **envp)
 {
 	dup2(ppx.pipefd[0], STDIN_FILENO);
 	dup2(ppx.fd2, STDOUT_FILENO);
 	close_pipes(ppx);
 	ppx.i = 0;
+	ppx.cmd = ft_split(argv[3], ' ');
 	if (argv[3][0] != ' ')
 	{
-		ppx.cmd = ft_split(argv[3], ' ');
 		while(ppx.cmd[ppx.i])
 		{
 			ppx.ar[ppx.i] = ppx.cmd[ppx.i];
@@ -99,10 +94,5 @@ int	child_number_two(t_pipex ppx, char **argv, char **envp)
 		if (!ppx.path)
 			print_error_msg_3(ERR_CMD, ppx.ar[0], ppx);
 	}
-	if(execve(ppx.path, ppx.ar, envp) == -1)
-	{
-		free_all(ppx);
-		return(127);
-	}
-	return (1);
+	execve(ppx.path, ppx.ar, envp);
 }

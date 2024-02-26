@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@42student.fr>               +#+  +:+       +#+        */
+/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:48:58 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/25 16:11:52 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/02/26 18:26:08 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define PATH "/usr/bin/"
 # define ERR_PIPE "Error with pipe"
 # define ERR_FORK "Error with fork"
+# define ERR_PERM "Permission denied: "
 # define ERR_FILE_DIR "No such file or directory: "
 # define ERR_CMD "Command not found: "
 
@@ -33,6 +34,8 @@ typedef struct s_pipex
 {
 	int		status;
 	int		exit_status;
+	int		error_with_file_1;
+	int		error_with_file_2;
 	int		i;
 	int		pid1;
 	int		pid2;
@@ -48,8 +51,8 @@ typedef struct s_pipex
 }	t_pipex;
 
 /*Childs*/
-int		child_number_one(t_pipex pipex, char **argv, char **envp);
-int		child_number_two(t_pipex ppx, char **argv, char **envp);
+void	child_number_one(t_pipex pipex, char **argv, char **envp);
+void	child_number_two(t_pipex ppx, char **argv, char **envp);
 
 /*Pipex*/
 void	print_error_msg(char *err_msg, char *err_msg2);
