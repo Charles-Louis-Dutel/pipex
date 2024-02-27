@@ -12,19 +12,23 @@
 
 #include "pipex.h"
 
-char	*get_path(char **envp)
+void	get_path(char **argv, char **envp, t_pipex *ppx)
 {
 	int (i) = 0;
-	if (*envp)
+	if (*envp == NULL && (access(argv[2], F_OK) < 0 || access(argv[3], F_OK) < 0))
+		exit(127);
+	while (envp[i])
 	{
-		while (envp[i])
+		if (strncmp("PATH", envp[i], 4) == 0)
 		{
-			if (strncmp("PATH", envp[i], 4) == 0)
-				return (envp[i] + 5);
-			i++;
+			ppx->env_path = envp[i] + 5;
+			ppx->path_tab = ft_split(ppx->env_path, ':');
+			return ;
 		}
+		i++;
 	}
-	return (NULL);
+	ppx->env_path = NULL;
+	ppx->path_tab = ft_split(ppx->env_path, ':');
 }
 
 static void	fd_and_pipe(int argc, char **argv, t_pipex *ppx)
@@ -58,8 +62,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 		return (1);
 	fd_and_pipe(argc, argv, &ppx);
-	ppx.env_path = get_path(envp);
-	ppx.path_tab = ft_split(ppx.env_path, ':');
+	get_path(argv, envp, &ppx);
 	ppx.pid1 = fork();
 	if (ppx.pid1 < 0)
 		print_error_msg_2(ERR_FORK);

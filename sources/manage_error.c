@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:58:36 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/26 18:25:53 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/02/27 02:43:57 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,4 @@ void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx)
 	free_all(ppx);
 	exit(127);
 }
+

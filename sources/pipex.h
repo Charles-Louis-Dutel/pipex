@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:48:58 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/26 18:26:08 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/02/27 02:44:01 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <unistd.h>
 # include "../libft/libft.h"
 
-# define PATH "/usr/bin/"
+# define ERR_PATH "No PATH\n"
 # define ERR_PIPE "Error with pipe"
 # define ERR_FORK "Error with fork"
 # define ERR_PERM "Permission denied: "
@@ -43,6 +43,7 @@ typedef struct s_pipex
 	int		fd2;
 	int		pipefd[2];
 	char	*err_msg;
+	char	*err_msg2;
 	char	*env_path;
 	char	*path;
 	char	*ar[6];

@@ -1,6 +1,6 @@
 NAME = libgnl.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 ###########################Sources#############################
 SRCS = get_next_line.c get_next_line_utils.c

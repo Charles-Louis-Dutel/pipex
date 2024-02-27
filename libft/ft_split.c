@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@42student.fr>               +#+  +:+       +#+        */
+/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:20:52 by cdutel            #+#    #+#             */
-/*   Updated: 2023/12/19 13:02:05 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/02/27 08:17:49 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,14 @@ char	**ft_split(char const *s, char c)
 {
 	char		**dest;
 	int			start;
-	size_t		i;
-	int			j;
 
+	size_t		(i) = 0;
+	int			(j) = 0;
 	if (!s)
 		return (NULL);
 	dest = malloc(sizeof(char *) * (ft_n_mot(s, c) + 1));
 	if (!dest)
 		return (NULL);
-	i = 0;
-	j = 0;
 	while (i < ft_strlen(s))
 	{
 		if (s[i] != c && s[i])
@@ -85,6 +83,8 @@ char	**ft_split(char const *s, char c)
 			while (s[i] != c && s[i])
 				i++;
 			dest[j++] = remplir_dest(s, start, i, dest);
+			if (dest[j - 1] == NULL)
+				return (NULL);
 		}
 		i++;
 	}

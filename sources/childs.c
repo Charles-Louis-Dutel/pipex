@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:55:14 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/26 17:14:17 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/02/27 08:38:30 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	child_number_one(t_pipex ppx, char **argv, char **envp)
 	ppx.cmd = ft_split(argv[2], ' ');
 	if (argv[2][0] != ' ')
 	{
-		while(ppx.cmd[ppx.i])
+		while (ppx.cmd[ppx.i])
 		{
 			ppx.ar[ppx.i] = ppx.cmd[ppx.i];
 			ppx.i++;
@@ -49,7 +49,7 @@ void	child_number_one(t_pipex ppx, char **argv, char **envp)
 	else
 		ppx.ar[ppx.i++] = argv[2];
 	ppx.ar[ppx.i] = NULL;
-	if (ft_strncmp("/", ppx.ar[0], 1) == 0)
+	if (ft_strnstr(ppx.ar[0], "/", ft_strlen(ppx.ar[0])) != 0)
 	{
 		if (access(ppx.ar[0], 0) != 0)
 			print_error_msg_3(ERR_FILE_DIR, ppx.ar[0], ppx);
@@ -73,7 +73,7 @@ void	child_number_two(t_pipex ppx, char **argv, char **envp)
 	ppx.cmd = ft_split(argv[3], ' ');
 	if (argv[3][0] != ' ')
 	{
-		while(ppx.cmd[ppx.i])
+		while (ppx.cmd[ppx.i])
 		{
 			ppx.ar[ppx.i] = ppx.cmd[ppx.i];
 			ppx.i++;
@@ -82,7 +82,7 @@ void	child_number_two(t_pipex ppx, char **argv, char **envp)
 	else
 		ppx.ar[ppx.i++] = argv[3];
 	ppx.ar[ppx.i] = NULL;
-	if (ft_strncmp("/", ppx.ar[0], 1) == 0)
+	if (ft_strnstr(ppx.ar[0], "/", ft_strlen(ppx.ar[0])) != 0)
 	{
 		if (access(ppx.ar[0], 0) != 0)
 			print_error_msg_3(ERR_FILE_DIR, ppx.ar[0], ppx);
