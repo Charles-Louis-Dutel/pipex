@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:21:07 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/27 08:19:49 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/04 15:27:36 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_le_xav(char **dest)
 	size_t	i;
 
 	i = 0;
+	if (!dest)
+		return ;
 	while (dest[i])
 	{
 		free(dest[i]);

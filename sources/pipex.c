@@ -15,7 +15,8 @@
 void	get_path(char **argv, char **envp, t_pipex *ppx)
 {
 	int (i) = 0;
-	if (*envp == NULL && (access(argv[2], F_OK) < 0 || access(argv[3], F_OK) < 0))
+	if (*envp == NULL && (access(argv[2], F_OK) < 0
+			|| access(argv[3], F_OK) < 0))
 		exit(127);
 	while (envp[i])
 	{
@@ -55,6 +56,19 @@ static void	fd_and_pipe(int argc, char **argv, t_pipex *ppx)
 		print_error_msg_2(ERR_PIPE);
 }
 
+static int	wait_for_childs(t_pipex ppx)
+{
+	int (exit_status) = 0;
+	int (pid) = 0;
+	while (pid != -1)
+	{
+		pid = waitpid(-1, &ppx.status, 0);
+		if (pid == ppx.pid2)
+			exit_status = WEXITSTATUS(ppx.status);
+	}
+	return (exit_status);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	ppx;
@@ -74,15 +88,10 @@ int	main(int argc, char **argv, char **envp)
 	if (ppx.pid2 == 0 && ppx.pid1 != 0 && ppx.error_with_file_2 == 0)
 		child_number_two(ppx, argv, envp);
 	close_pipes(ppx);
-	while ((ppx.pid = waitpid(-1, &ppx.status, 0)) != -1)
-	{
-		if (ppx.pid == ppx.pid2)
-			ppx.exit_status = WEXITSTATUS(ppx.status);
-	}
+	ppx.exit_status = wait_for_childs(ppx);
 	if (ppx.path_tab)
 		ft_le_xav(ppx.path_tab);
 	if (ppx.error_with_file_2 == 1)
 		return (1);
 	return (ppx.exit_status);
 }
-
