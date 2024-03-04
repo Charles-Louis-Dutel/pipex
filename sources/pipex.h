@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:48:58 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/27 02:44:01 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:05:35 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_pipex
 	int		error_with_file_1;
 	int		error_with_file_2;
 	int		i;
+	int		pid;
 	int		pid1;
 	int		pid2;
 	int		fd1;
@@ -58,7 +59,7 @@ void	child_number_two(t_pipex ppx, char **argv, char **envp);
 /*Pipex*/
 void	print_error_msg(char *err_msg, char *err_msg2);
 void	print_error_msg_2(char *err_msg);
-void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx);
+void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx, int ex);
 
 /*Utils*/
 void	free_all(t_pipex ppx);

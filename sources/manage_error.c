@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:58:36 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/27 02:43:57 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:05:44 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_error_msg_2(char *err_msg)
 	exit(127);
 }
 
-void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx)
+void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx, int ex)
 {
 	char	*temp;
 	char	*msg;
@@ -36,6 +36,6 @@ void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx)
 	free(temp);
 	free(msg);
 	free_all(ppx);
-	exit(127);
+	exit(ex);
 }
 

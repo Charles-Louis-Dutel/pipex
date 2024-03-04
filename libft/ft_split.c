@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:20:52 by cdutel            #+#    #+#             */
-/*   Updated: 2024/02/27 08:17:49 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/04 12:23:29 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ char	**ft_split(char const *s, char c)
 	char		**dest;
 	int			start;
 
-	size_t		(i) = 0;
-	int			(j) = 0;
+	size_t (i) = 0;
+	int (j) = 0;
 	if (!s)
 		return (NULL);
 	dest = malloc(sizeof(char *) * (ft_n_mot(s, c) + 1));

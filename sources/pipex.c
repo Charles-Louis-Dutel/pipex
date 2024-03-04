@@ -42,7 +42,7 @@ static void	fd_and_pipe(int argc, char **argv, t_pipex *ppx)
 		print_error_msg(ERR_PERM, argv[1]);
 	}
 	if (ppx->fd1 < 0 && ppx->error_with_file_1 == 0)
-			print_error_msg(ERR_FILE_DIR, argv[1]);
+		print_error_msg(ERR_FILE_DIR, argv[1]);
 	ppx->fd2 = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (access(argv[argc - 1], F_OK | R_OK | W_OK) < 0)
 	{
@@ -74,13 +74,15 @@ int	main(int argc, char **argv, char **envp)
 	if (ppx.pid2 == 0 && ppx.pid1 != 0 && ppx.error_with_file_2 == 0)
 		child_number_two(ppx, argv, envp);
 	close_pipes(ppx);
-	waitpid(ppx.pid1, &ppx.status, 0);
-	waitpid(ppx.pid2, &ppx.status, 0);
+	while ((ppx.pid = waitpid(-1, &ppx.status, 0)) != -1)
+	{
+		if (ppx.pid == ppx.pid2)
+			ppx.exit_status = WEXITSTATUS(ppx.status);
+	}
 	if (ppx.path_tab)
 		ft_le_xav(ppx.path_tab);
 	if (ppx.error_with_file_2 == 1)
 		return (1);
-	ppx.exit_status	= WEXITSTATUS(ppx.status);
 	return (ppx.exit_status);
 }
 
