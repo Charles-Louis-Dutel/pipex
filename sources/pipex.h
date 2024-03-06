@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:48:58 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/04 14:05:35 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/04 17:38:44 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include "../libft/libft.h"
 
+# define ERR_ARG "Wrong number of arguments\n"
 # define ERR_PATH "No PATH\n"
 # define ERR_PIPE "Error with pipe"
 # define ERR_FORK "Error with fork"
@@ -53,7 +54,7 @@ typedef struct s_pipex
 }	t_pipex;
 
 /*Childs*/
-void	child_number_one(t_pipex pipex, char **argv, char **envp);
+void	child_number_one(t_pipex ppx, char **argv, char **envp);
 void	child_number_two(t_pipex ppx, char **argv, char **envp);
 
 /*Pipex*/

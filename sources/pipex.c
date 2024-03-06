@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	get_path(char **argv, char **envp, t_pipex *ppx)
+static void	get_path(char **argv, char **envp, t_pipex *ppx)
 {
 	int (i) = 0;
 	if (*envp == NULL && (access(argv[2], F_OK) < 0
@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 	t_pipex	ppx;
 
 	if (argc != 5)
-		return (1);
+		return (print_error_msg_2(ERR_ARG), 1);
 	fd_and_pipe(argc, argv, &ppx);
 	get_path(argv, envp, &ppx);
 	ppx.pid1 = fork();

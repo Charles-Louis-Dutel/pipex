@@ -9,15 +9,16 @@ FILES = pipex.c childs.c utils.c manage_error.c\
 
 SRCS = $(addprefix $(SRCS_DIR), $(FILES))
 
-#BONUS_DIR = sources/bonus/
-#FILES_BONUS =
+BONUS_DIR = sources/bonus/
+FILES_BONUS = pipex_bonus.c manage_error_bonus.c \
+			  utils_bonus.c childs_bonus.c \
 
-#SRCS_BONUS = $(addprefix $(BONUS_DIR), $(FILES_BONUS))
+SRCS_BONUS = $(addprefix $(BONUS_DIR), $(FILES_BONUS))
 
 ###########################Objects#########################
 OBJS = ${SRCS:.c=.o}
-#OBJS_BONUS = ${SRCS_BONUS:.c=.o}
-#OBJS_ALL = ${OBJS} ${OBJS_BONUS}
+OBJS_BONUS = ${SRCS_BONUS:.c=.o}
+OBJS_ALL = ${OBJS} ${OBJS_BONUS}
 
 ##########################Libs#############################
 LIBFT = ./libft/libft.a
@@ -32,18 +33,18 @@ ${NAME}: ${OBJS}
 
 all: ${NAME} bonus
 
-#bonus: ${OBJS_BONUS}
-#		@${MAKE} -C ./libft
-#		${CC} ${CFLAGS} ${OBJS_BONUS} ${ALL_LIB} -o ${NAME_BONUS}
+bonus: ${OBJS_BONUS}
+		@${MAKE} -C ./libft
+		${CC} ${CFLAGS} ${OBJS_BONUS} ${ALL_LIB} -o ${NAME_BONUS}
 
 clean:
 	@${MAKE} -C ./libft fclean
 	rm -f ${OBJS}
-#	rm -f ${OBJS_ALL}
+	rm -f ${OBJS_ALL}
 
 fclean: clean
 	rm -f ${NAME}
-#	rm -f ${NAME_BONUS}
+	rm -f ${NAME_BONUS}
 
 re: fclean all
 
