@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:35:04 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 17:15:09 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/11 20:59:10 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,22 @@ void	childs_process(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 {
 	if (ppx.i == 0)
 	{
+		if (ppx.error_with_file_1 == 1)
+		{
+			free_all(ppx);
+			close_pipes_2(ppx, pipes);
+			exit(1);
+		}
 		first_child(ppx, pipes, argv, envp);
 	}
 	else if (ppx.i == ppx.n_cmd_to_do - 1)
 	{
+		if (ppx.error_with_file_2 == 1)
+		{
+			free_all(ppx);
+			close_pipes_2(ppx, pipes);
+			exit(1);
+		}
 		last_child(ppx, pipes, argv, envp);
 	}
 	else

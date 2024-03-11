@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:50:11 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 17:17:30 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/11 18:21:11 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_pipex
 	int		pid2;
 	int		fd1;
 	int		fd2;
-	int		pipefd[2];
+	//int		pipefd[2];
 	char	*err_msg;
 	char	*err_msg2;
 	char	*env_path;

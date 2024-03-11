@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:50:02 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 17:18:19 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/11 20:25:10 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	last_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 {
 	dup2(pipes[ppx.i][0], STDIN_FILENO);
 	dup2(ppx.fd2, STDOUT_FILENO);
-	//close_pipes(ppx);
 	close_pipes_2(ppx, pipes);
 	ppx.j = 0;
 	ppx.cmd = ft_split(argv[ppx.cmd_number], ' ');
@@ -56,6 +55,7 @@ void	last_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 	else
 		ppx.ar[ppx.j++] = argv[ppx.cmd_number];
 	ppx.ar[ppx.j] = NULL;
+	//write(2, "caca\n", 5);
 	if (ft_strnstr(ppx.ar[0], "/", ft_strlen(ppx.ar[0])) != 0)
 		case_directory(ppx, envp);
 	else

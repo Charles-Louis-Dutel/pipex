@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:51:22 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 17:14:58 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/11 20:54:54 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static void	open_pipes(int pipes[][2], int taille)
 		}
 		pipe_number++;
 	}
-	// if (pipe(ppx->pipefd) < 0)
-	// 	print_error_msg_2(ERR_PIPE);
 }
 
 static void	open_files(int argc, char **argv, t_pipex *ppx)
@@ -72,11 +70,25 @@ static void	open_files(int argc, char **argv, t_pipex *ppx)
 		print_error_msg(ERR_FILE_DIR, argv[argc - 1]);
 }
 
+static int	wait_for_childs(t_pipex ppx, int pids)
+{
+	int (exit_status) = 0;
+	int (pid) = 0;
+	while (pid != -1)
+	{
+		pid = waitpid(-1, &ppx.status, 0);
+		if (pid == pids)
+			exit_status = WEXITSTATUS(ppx.status);
+	}
+	return (exit_status);
+}
+
 static int	without_here_doc(int argc, char **argv, char **envp)
 {
 	t_pipex	ppx;
 	int		pids[argc - 3];
 	int		pipes[argc - 2][2];
+	int		test;
 
 	ppx.cmd_number = CMD1;
 	ppx.n_cmd_to_do = argc - 3;
@@ -87,17 +99,21 @@ static int	without_here_doc(int argc, char **argv, char **envp)
 	while (ppx.i < argc - 3)
 	{
 		pids[ppx.i] = fork();
-		if (pids[ppx.i] == 0)
+		test = pids[ppx.i];
+		if (pids[ppx.i] == 0 && ppx.i < argc -3)
+		{
 			childs_process(ppx, pipes, argv, envp);
+		}
 		ppx.cmd_number++;
 		ppx.i++;
 	}
 	close_pipes_2(ppx, pipes);
-	while (ppx.pid2 >= 0)
-	{
-		ppx.pid2 = waitpid(-1, &ppx.status, 0);
-	}
-	return (0);
+	ppx.exit_status = wait_for_childs(ppx, test);
+	if (ppx.path_tab)
+		ft_le_xav(ppx.path_tab);
+	if (ppx.error_with_file_2 == 1)
+		return (1);
+	return (ppx.exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)

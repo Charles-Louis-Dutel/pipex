@@ -40,6 +40,7 @@ bonus: ${OBJS_BONUS}
 clean:
 	@${MAKE} -C ./libft fclean
 	rm -f ${OBJS}
+#	rm -f ${OBJS_BONUS}
 	rm -f ${OBJS_ALL}
 
 fclean: clean
