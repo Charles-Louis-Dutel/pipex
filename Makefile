@@ -1,13 +1,13 @@
 NAME = pipex
-NAME_BONUS = pipex_bonus
+#NAME_BONUS = pipex_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 
 ############################Sources########################
-SRCS_DIR = sources/
-FILES = pipex.c childs.c utils.c manage_error.c\
+#SRCS_DIR = sources/
+#FILES = pipex.c childs.c utils.c manage_error.c\
 
-SRCS = $(addprefix $(SRCS_DIR), $(FILES))
+#SRCS = $(addprefix $(SRCS_DIR), $(FILES))
 
 BONUS_DIR = sources/bonus/
 FILES_BONUS = pipex_bonus.c manage_error_bonus.c \
@@ -16,9 +16,9 @@ FILES_BONUS = pipex_bonus.c manage_error_bonus.c \
 SRCS_BONUS = $(addprefix $(BONUS_DIR), $(FILES_BONUS))
 
 ###########################Objects#########################
-OBJS = ${SRCS:.c=.o}
+#OBJS = ${SRCS:.c=.o}
 OBJS_BONUS = ${SRCS_BONUS:.c=.o}
-OBJS_ALL = ${OBJS} ${OBJS_BONUS}
+#OBJS_ALL = ${OBJS} ${OBJS_BONUS}
 
 ##########################Libs#############################
 LIBFT = ./libft/libft.a
@@ -27,25 +27,25 @@ GNL = ./libft/get_next_line/libgnl.a
 ALL_LIB = ${LIBFT} ${FT_PRINTF} ${GNL}
 
 ##########################Rules############################
-${NAME}: ${OBJS}
+${NAME}: ${OBJS_BONUS}
 		@${MAKE} -C ./libft
-		${CC} ${CFLAGS} ${OBJS} ${ALL_LIB} -o ${NAME}
+		${CC} ${CFLAGS} ${OBJS_BONUS} ${ALL_LIB} -o ${NAME}
 
 all: ${NAME} bonus
 
-bonus: ${OBJS_BONUS}
-		@${MAKE} -C ./libft
-		${CC} ${CFLAGS} ${OBJS_BONUS} ${ALL_LIB} -o ${NAME_BONUS}
+#bonus: ${OBJS_BONUS}
+#		@${MAKE} -C ./libft
+#		${CC} ${CFLAGS} ${OBJS_BONUS} ${ALL_LIB} -o ${NAME_BONUS}
 
 clean:
 	@${MAKE} -C ./libft fclean
-	rm -f ${OBJS}
-#	rm -f ${OBJS_BONUS}
-	rm -f ${OBJS_ALL}
+#	rm -f ${OBJS}
+	rm -f ${OBJS_BONUS}
+#	rm -f ${OBJS_ALL}
 
 fclean: clean
 	rm -f ${NAME}
-	rm -f ${NAME_BONUS}
+#	rm -f ${NAME_BONUS}
 
 re: fclean all
 
