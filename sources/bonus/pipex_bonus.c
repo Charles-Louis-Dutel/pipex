@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:51:22 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/05 13:22:49 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/11 17:14:58 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,33 @@ static void	get_path(char **argv, char **envp, t_pipex *ppx)
 	ppx->path_tab = ft_split(ppx->env_path, ':');
 }
 
-static void	fd_and_pipe(int argc, char **argv, t_pipex *ppx)
+static void	open_pipes(int pipes[][2], int taille)
+{
+	int (pipe_number) = 0;
+	while(pipe_number < taille)
+	{
+		if (pipe(pipes[pipe_number]) < 0)
+		{
+			print_error_msg_2(ERR_PIPE);
+		}
+		pipe_number++;
+	}
+	// if (pipe(ppx->pipefd) < 0)
+	// 	print_error_msg_2(ERR_PIPE);
+}
+
+static void	open_files(int argc, char **argv, t_pipex *ppx)
 {
 	ppx->error_with_file_1 = 0;
 	ppx->error_with_file_2 = 0;
-	//ppx->n_fork_to_do = argc - 3;
 	ppx->fd1 = open(argv[1], O_RDONLY);
-	if (access(argv[1], F_OK | R_OK) < 0)
+	if (access(argv[1], F_OK) >= 0)
 	{
-		ppx->error_with_file_1 = 1;
-		print_error_msg(ERR_PERM, argv[1]);
+		if (access(argv[1], F_OK | R_OK) < 0)
+		{
+			ppx->error_with_file_1 = 1;
+			print_error_msg(ERR_PERM, argv[1]);
+		}
 	}
 	if (ppx->fd1 < 0 && ppx->error_with_file_1 == 0)
 		print_error_msg(ERR_FILE_DIR, argv[1]);
@@ -53,29 +70,30 @@ static void	fd_and_pipe(int argc, char **argv, t_pipex *ppx)
 	}
 	if (ppx->fd2 < 0 && ppx->error_with_file_2 == 0)
 		print_error_msg(ERR_FILE_DIR, argv[argc - 1]);
-	if (pipe(ppx->pipefd) < 0)
-		print_error_msg_2(ERR_PIPE);
 }
 
 static int	without_here_doc(int argc, char **argv, char **envp)
 {
 	t_pipex	ppx;
 	int		pids[argc - 3];
+	int		pipes[argc - 2][2];
 
-	fd_and_pipe(argc, argv, &ppx);
+	ppx.cmd_number = CMD1;
+	ppx.n_cmd_to_do = argc - 3;
+	open_files(argc, argv, &ppx);
+	open_pipes(pipes, argc - 2);
 	get_path(argv, envp, &ppx);
 	ppx.i = 0;
 	while (ppx.i < argc - 3)
 	{
 		pids[ppx.i] = fork();
 		if (pids[ppx.i] == 0)
-		{
-			childs_process(ppx, argv, envp);
-			return (0);
-		}
+			childs_process(ppx, pipes, argv, envp);
+		ppx.cmd_number++;
 		ppx.i++;
 	}
-	while (ppx.pid2 != -1)
+	close_pipes_2(ppx, pipes);
+	while (ppx.pid2 >= 0)
 	{
 		ppx.pid2 = waitpid(-1, &ppx.status, 0);
 	}

@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:21:07 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/04 17:25:55 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/11 17:17:16 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,25 @@ void	free_all(t_pipex ppx)
 		ft_le_xav(ppx.cmd);
 }
 
-void	close_pipes(t_pipex ppx)
+// void	close_pipes(t_pipex ppx, int **pipes)
+// {
+// 	close(ppx.fd1);
+// 	close(ppx.fd2);
+// 	//close(ppx.pipefd[0]);
+// 	//close(ppx.pipefd[1]);
+// }
+
+void	close_pipes_2(t_pipex ppx, int pipes[][2])
 {
+	int (j) = 0;
 	close(ppx.fd1);
 	close(ppx.fd2);
-	close(ppx.pipefd[0]);
-	close(ppx.pipefd[1]);
+	while (j < ppx.n_cmd_to_do)
+	{
+		//if (ppx.i != j)
+			close(pipes[j][0]);
+		//if (ppx.i + 1 != j)
+			close(pipes[j][1]);
+		j++;
+	}
 }
