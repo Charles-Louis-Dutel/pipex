@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 00:53:14 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/12 11:43:23 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/12 11:57:57 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static void	open_files_2(int argc, char **argv, t_pipex *ppx)
 			print_error_msg(ERR_FILE_DIR, FILE_HD);
 	else if (!(ppx->fd1 < 0))
 			ft_putstr_fd(ppx->str_hd, ppx->fd1);
+	close(ppx->fd1);
 	ppx->fd1 = open(FILE_HD, O_RDWR);
-
 	if (ppx->str_hd)
 		free(ppx->str_hd);
-	ppx->fd2 = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
+	ppx->fd2 = open(argv[argc - 1], O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (access(argv[argc - 1], F_OK | R_OK | W_OK) < 0)
 	{
 		ppx->error_with_file_2 = 1;
