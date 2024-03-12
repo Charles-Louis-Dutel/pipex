@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:35:04 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 23:35:25 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/12 11:49:34 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	case_command(t_pipex ppx, char **envp)
 	else
 	{
 		ppx.path = get_command(ppx.path_tab, ppx.ar[0]);
-		if (!ppx.path)
+		if (!ppx.path || ppx.ar[0][0] == '\0')
 			print_error_msg_3(ERR_CMD, ppx.ar[0], ppx, 127);
 	}
 	execve(ppx.path, ppx.ar, envp);
@@ -85,7 +85,7 @@ void	childs_process(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 		if (ppx.error_with_file_1 == 1)
 		{
 			free_all(ppx);
-			close_pipes_2(ppx, pipes);
+			close_pipes(ppx, pipes);
 			exit(1);
 		}
 		first_child(ppx, pipes, argv, envp);
@@ -95,7 +95,7 @@ void	childs_process(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 		if (ppx.error_with_file_2 == 1)
 		{
 			free_all(ppx);
-			close_pipes_2(ppx, pipes);
+			close_pipes(ppx, pipes);
 			exit(1);
 		}
 		last_child(ppx, pipes, argv, envp);

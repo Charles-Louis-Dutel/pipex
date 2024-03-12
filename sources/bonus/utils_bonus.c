@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:21:07 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 20:06:29 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/12 06:22:27 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,11 @@ void	free_all(t_pipex ppx)
 		ft_le_xav(ppx.path_tab);
 	if (ppx.cmd)
 		ft_le_xav(ppx.cmd);
+	if (ppx.pids)
+		free(ppx.pids);
 }
 
-// void	close_pipes(t_pipex ppx, int **pipes)
-// {
-// 	close(ppx.fd1);
-// 	close(ppx.fd2);
-// 	//close(ppx.pipefd[0]);
-// 	//close(ppx.pipefd[1]);
-// }
-
-void	close_pipes_2(t_pipex ppx, int pipes[][2])
+void	close_pipes(t_pipex ppx, int pipes[][2])
 {
 	int (j) = 0;
 	close(ppx.fd1);
@@ -54,4 +48,17 @@ void	close_pipes_2(t_pipex ppx, int pipes[][2])
 		close(pipes[j][1]);
 		j++;
 	}
+}
+
+int	wait_for_childs(t_pipex ppx, int pids)
+{
+	int (exit_status) = 0;
+	int (pid) = 0;
+	while (pid != -1)
+	{
+		pid = waitpid(-1, &ppx.status, 0);
+		if (pid == pids)
+			exit_status = WEXITSTATUS(ppx.status);
+	}
+	return (exit_status);
 }

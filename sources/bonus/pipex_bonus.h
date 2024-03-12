@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:50:11 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 18:21:11 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/12 10:36:26 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define ERR_CMD "Command not found: "
 # define CMD1 2
 # define CMD1HD 3
+# define FILE_HD "file_hd"
 
 typedef struct s_pipex
 {
@@ -44,11 +45,12 @@ typedef struct s_pipex
 	int		cmd_number;
 	int		n_cmd_to_do;
 	int		pid;
-	int		pid1;
+	int		pid_to_wait;
 	int		pid2;
 	int		fd1;
 	int		fd2;
-	//int		pipefd[2];
+	char	*limiter;
+	char	*str_hd;
 	char	*err_msg;
 	char	*err_msg2;
 	char	*env_path;
@@ -56,6 +58,7 @@ typedef struct s_pipex
 	char	*ar[10];
 	char	**cmd;
 	char	**path_tab;
+	int		*pids;
 }	t_pipex;
 
 /*Childs*/
@@ -77,8 +80,19 @@ void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx, int ex);
 /*Utils*/
 void	free_all(t_pipex ppx);
 void	ft_le_xav(char **dest);
-//void	close_pipes(t_pipex ppx);
-//void	close_pipes(t_pipex ppx, int **pipes);
-void	close_pipes_2(t_pipex ppx, int pipes[][2]);
+void	close_pipes(t_pipex ppx, int pipes[][2]);
+int		wait_for_childs(t_pipex ppx, int pids);
+
+/*Without_here_doc*/
+int		without_here_doc(int argc, char **argv, char **envp);
+void	get_path(int argc, char **argv, char **envp, t_pipex *ppx);
+void	open_pipes(int pipes[][2], int taille);
+int		check_acces(int argc, char **argv, t_pipex ppx);
+
+/*Here_doc*/
+int		here_doc(int argc, char **argv, char **envp);
+
+/*Child_for_hd*/
+void	childs_hd(t_pipex ppx, int pipes[][2], char **argv, char **envp);
 
 #endif

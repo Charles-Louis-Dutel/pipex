@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:50:02 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/11 22:03:59 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/12 11:32:56 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	first_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 {
 	dup2(ppx.fd1, STDIN_FILENO);
 	dup2(pipes[ppx.i + 1][1], STDOUT_FILENO);
-	close_pipes_2(ppx, pipes);
+	close_pipes(ppx, pipes);
 	ppx.j = 0;
 	ppx.cmd = ft_split(argv[ppx.cmd_number], ' ');
-	if (argv[ppx.cmd_number][0] != ' ')
+	if (argv[ppx.cmd_number][0] != ' ' && argv[ppx.cmd_number][0] != '\0')
 	{
 		while (ppx.cmd[ppx.j])
 		{
@@ -40,10 +40,10 @@ void	last_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 {
 	dup2(pipes[ppx.i][0], STDIN_FILENO);
 	dup2(ppx.fd2, STDOUT_FILENO);
-	close_pipes_2(ppx, pipes);
+	close_pipes(ppx, pipes);
 	ppx.j = 0;
 	ppx.cmd = ft_split(argv[ppx.cmd_number], ' ');
-	if (argv[ppx.cmd_number][0] != ' ')
+	if (argv[ppx.cmd_number][0] != ' ' && argv[ppx.cmd_number][0] != '\0')
 	{
 		while (ppx.cmd[ppx.j])
 		{
@@ -64,10 +64,10 @@ void	inter_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 {
 	dup2(pipes[ppx.i][0], STDIN_FILENO);
 	dup2(pipes[ppx.i + 1][1], STDOUT_FILENO);
-	close_pipes_2(ppx, pipes);
+	close_pipes(ppx, pipes);
 	ppx.j = 0;
 	ppx.cmd = ft_split(argv[ppx.cmd_number], ' ');
-	if (argv[ppx.cmd_number][0] != ' ')
+	if (argv[ppx.cmd_number][0] != ' ' && argv[ppx.cmd_number][0] != '\0')
 	{
 		while (ppx.cmd[ppx.j])
 		{

@@ -12,6 +12,7 @@ CFLAGS = -Wall -Wextra -Werror -g3
 BONUS_DIR = sources/bonus/
 FILES_BONUS = pipex_bonus.c manage_error_bonus.c \
 			  utils_bonus.c childs_bonus.c first_last_child.c \
+			  here_doc.c without_here_doc.c \
 
 SRCS_BONUS = $(addprefix $(BONUS_DIR), $(FILES_BONUS))
 
