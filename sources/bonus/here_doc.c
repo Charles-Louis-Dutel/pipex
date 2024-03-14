@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cdutel <cdutel@42student.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 00:53:14 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/12 11:57:57 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/14 11:59:40 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,15 @@ static char	*get_here_doc(t_pipex ppx)
 	while (1)
 	{
 		temp2 = dest;
-		temp = get_next_line(STDIN_FILENO);
+		temp = gnl_no_malloc(STDIN_FILENO);
 		if (!temp || ft_strncmp(ppx.limiter, temp, ft_strlen(ppx.limiter)) == 0)
 			break ;
 		dest = (ft_strjoin(temp2, temp));
 		free(temp);
 		free(temp2);
 	}
+	if (temp)
+		free (temp);
 	return (dest);
 	}
 

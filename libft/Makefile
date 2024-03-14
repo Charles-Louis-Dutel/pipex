@@ -29,11 +29,13 @@ all: ${NAME}
 ${NAME}: ${OBJS}
 	@${MAKE} -C ./ft_printf
 	@${MAKE} -C ./get_next_line
+	@${MAKE} -C ./gnl_no_malloc
 	ar rcs ${NAME} ${OBJS} ./ft_printf/libftprintf.a ./get_next_line/libgnl.a $?
 
 clean:
 	@${MAKE} -C ./ft_printf fclean
 	@${MAKE} -C ./get_next_line fclean
+	@${MAKE} -C ./gnl_no_malloc fclean
 	rm -f ${OBJS}
 
 fclean: clean

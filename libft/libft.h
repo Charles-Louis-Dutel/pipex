@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include "ft_printf/ft_printf.h"
 # include "get_next_line/get_next_line.h"
+# include "gnl_no_malloc/gnl_no_malloc.h"
 
 typedef struct s_list
 {
