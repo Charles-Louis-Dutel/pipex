@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:35:04 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 21:04:10 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:54:07 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ void	case_directory(t_pipex ppx, char **envp)
 	if (access(ppx.ar[0], F_OK | X_OK) != 0)
 		print_error_msg_3(ERR_PERM, ppx.ar[0], ppx, 126);
 	ppx.path = ppx.ar[0];
-	execve(ppx.path, ppx.ar, envp);
+	if (execve(ppx.path, ppx.ar, envp) < 0)
+	{
+		free_all(ppx);
+		print_error_msg_2(ERR_EXEC);
+	}
 }
 
 void	case_command(t_pipex ppx, char **envp)
@@ -56,7 +60,11 @@ void	case_command(t_pipex ppx, char **envp)
 	ppx.path = get_command(ppx.path_tab, ppx.ar[0]);
 	if (!ppx.path || ppx.ar[0][0] == '\0')
 		print_error_msg_3(ERR_CMD, ppx.ar[0], ppx, 127);
-	execve(ppx.path, ppx.ar, envp);
+	if (execve(ppx.path, ppx.ar, envp) < 0)
+	{
+		free_all(ppx);
+		print_error_msg_2(ERR_EXEC);
+	}
 }
 
 void	childs_process(t_pipex ppx, int **pipes, char **argv, char **envp)
