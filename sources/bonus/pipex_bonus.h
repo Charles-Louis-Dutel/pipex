@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:50:11 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 17:16:13 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:26:10 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_pipex
 	int		pid2;
 	int		fd1;
 	int		fd2;
+	int		tab_size;
 	char	*limiter;
 	char	*str_hd;
 	char	*err_msg;
@@ -59,18 +60,19 @@ typedef struct s_pipex
 	char	**cmd;
 	char	**path_tab;
 	int		*pids;
+	int		**pipes;
 }	t_pipex;
 
 /*Childs*/
 char	*get_command(char **path_tab, char *cmd_name);
 void	case_directory(t_pipex ppx, char **envp);
 void	case_command(t_pipex ppx, char **envp);
-void	childs_process(t_pipex ppx, int pipes[][2], char **argv, char **envp);
+void	childs_process(t_pipex ppx, int **pipes, char **argv, char **envp);
 
 /*First_last_child*/
-void	first_child(t_pipex ppx, int pipes[][2], char **argv, char **envp);
-void	last_child(t_pipex ppx, int pipes[][2], char **argv, char **envp);
-void	inter_child(t_pipex ppx, int pipes[][2], char **argv, char **envp);
+void	first_child(t_pipex ppx, int **pipes, char **argv, char **envp);
+void	last_child(t_pipex ppx, int **pipes, char **argv, char **envp);
+void	inter_child(t_pipex ppx, int **pipes, char **argv, char **envp);
 
 /*Pipex*/
 void	print_error_msg(char *err_msg, char *err_msg2);
@@ -80,14 +82,15 @@ void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx, int ex);
 /*Utils*/
 void	free_all(t_pipex ppx);
 void	ft_le_xav(char **dest);
-void	close_pipes(t_pipex ppx, int pipes[][2]);
+void	free_int_tab(int **pipes, int tab_size);
+void	close_pipes(t_pipex ppx, int **pipes);
 int		wait_for_childs(t_pipex ppx, int pids);
 t_pipex	init_ppx(void);
 
 /*Without_here_doc*/
 int		without_here_doc(int argc, char **argv, char **envp);
 void	get_path(int argc, char **argv, char **envp, t_pipex *ppx);
-void	open_pipes(int pipes[][2], int taille);
+int		**open_pipes(int taille, t_pipex *ppx);
 int		check_acces(int argc, char **argv, t_pipex ppx);
 
 /*Here_doc*/

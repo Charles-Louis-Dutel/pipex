@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:58:36 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/04 17:24:17 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:30:46 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,19 @@ void	print_error_msg_3(char *err_msg, char *err_msg2, t_pipex ppx, int ex)
 	free(msg);
 	free_all(ppx);
 	exit(ex);
+}
+
+void	free_int_tab(int **pipes, int tab_size)
+{
+	int	i;
+
+	i = 0;
+	if (!pipes)
+		return ;
+	while (i < tab_size)
+	{
+		free(pipes[i]);
+		i++;
+	}
+	free(pipes);
 }

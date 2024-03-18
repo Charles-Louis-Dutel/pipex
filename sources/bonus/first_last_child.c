@@ -6,13 +6,13 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:50:02 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/12 11:32:56 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:04:03 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	first_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
+void	first_child(t_pipex ppx, int **pipes, char **argv, char **envp)
 {
 	dup2(ppx.fd1, STDIN_FILENO);
 	dup2(pipes[ppx.i + 1][1], STDOUT_FILENO);
@@ -36,7 +36,7 @@ void	first_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 		case_command(ppx, envp);
 }
 
-void	last_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
+void	last_child(t_pipex ppx, int **pipes, char **argv, char **envp)
 {
 	dup2(pipes[ppx.i][0], STDIN_FILENO);
 	dup2(ppx.fd2, STDOUT_FILENO);
@@ -60,7 +60,7 @@ void	last_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
 		case_command(ppx, envp);
 }
 
-void	inter_child(t_pipex ppx, int pipes[][2], char **argv, char **envp)
+void	inter_child(t_pipex ppx, int **pipes, char **argv, char **envp)
 {
 	dup2(pipes[ppx.i][0], STDIN_FILENO);
 	dup2(pipes[ppx.i + 1][1], STDOUT_FILENO);

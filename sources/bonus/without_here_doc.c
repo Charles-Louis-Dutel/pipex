@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:57:29 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 17:41:34 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:34:14 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,24 @@ void	get_path(int argc, char **argv, char **envp, t_pipex *ppx)
 	ppx->path_tab = ft_split(ppx->env_path, ':');
 }
 
-void	open_pipes(int pipes[][2], int taille)
+int	**open_pipes(int taille, t_pipex *ppx)
 {
+	int	**pipes;
+
+	pipes = malloc(sizeof(pipes) * (taille));
 	int (pipe_number) = 0;
 	while (pipe_number < taille)
 	{
+		pipes[pipe_number] = malloc(sizeof(int) * 2);
 		if (pipe(pipes[pipe_number]) < 0)
 		{
+			free_int_tab(pipes, pipe_number + 1);
 			print_error_msg_2(ERR_PIPE);
 		}
 		pipe_number++;
 	}
+	ppx->tab_size = pipe_number;
+	return (pipes);
 }
 
 static void	open_files(int argc, char **argv, t_pipex *ppx)
@@ -82,25 +89,24 @@ static void	open_files(int argc, char **argv, t_pipex *ppx)
 int	without_here_doc(int argc, char **argv, char **envp)
 {
 	t_pipex	ppx;
-	int		pipes[argc - 2][2];
 
 	ppx = init_ppx();
 	ppx.pids = malloc(sizeof(int) * argc - 3);
 	ppx.cmd_number = CMD1;
 	ppx.n_cmd_to_do = argc - 3;
 	open_files(argc, argv, &ppx);
-	open_pipes(pipes, argc - 2);
+	ppx.pipes = open_pipes(argc - 2, &ppx);
 	get_path(argc, argv, envp, &ppx);
 	while (ppx.i < argc - 3)
 	{
 		ppx.pids[ppx.i] = fork();
 		ppx.pid_to_wait = ppx.pids[ppx.i];
 		if (ppx.pids[ppx.i] == 0 && ppx.i < argc - 3)
-			childs_process(ppx, pipes, argv, envp);
+			childs_process(ppx, ppx.pipes, argv, envp);
 		ppx.cmd_number++;
 		ppx.i++;
 	}
-	close_pipes(ppx, pipes);
+	close_pipes(ppx, ppx.pipes);
 	ppx.exit_status = wait_for_childs(ppx, ppx.pid_to_wait);
 	if (ppx.error_with_file_2 == 1)
 		return (free_all(ppx), 1);

@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:35:04 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 17:50:49 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:04:10 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	case_command(t_pipex ppx, char **envp)
 	execve(ppx.path, ppx.ar, envp);
 }
 
-void	childs_process(t_pipex ppx, int pipes[][2], char **argv, char **envp)
+void	childs_process(t_pipex ppx, int **pipes, char **argv, char **envp)
 {
 	if (ppx.i == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:21:07 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 17:40:56 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:30:08 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	free_all(t_pipex ppx)
 		free(ppx.pids);
 	if (ppx.limiter)
 		free(ppx.limiter);
+	if (ppx.pipes)
+		free_int_tab(ppx.pipes, ppx.tab_size);
 }
 
-void	close_pipes(t_pipex ppx, int pipes[][2])
+void	close_pipes(t_pipex ppx, int **pipes)
 {
 	int (j) = 0;
 	close(ppx.fd1);
@@ -75,6 +77,7 @@ t_pipex	init_ppx(void)
 	ppx.exit_status = 0;
 	ppx.cmd_number = CMD1HD;
 	ppx.pids = NULL;
+	ppx.pipes = NULL;
 	ppx.limiter = NULL;
 	ppx.str_hd = NULL;
 	ppx.cmd = NULL;
