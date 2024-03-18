@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_no_malloc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@42student.fr>               +#+  +:+       +#+        */
+/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 08:17:46 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/14 11:46:08 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 14:55:35 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*get_line(char *s)
 	dest = malloc(sizeof(char) * (len + 1));
 	if (!dest)
 		return (NULL);
-	while (i < len  && s[i] != '\n')
+	while (i < len && s[i] != '\n')
 	{
 		dest[i] = s[i];
 		i++;
@@ -87,6 +87,7 @@ char	*gnl_no_malloc(int fd)
 	t_gnl		gnl;
 	static char	stat[BUFFER_SIZE + 1];
 
+	gnl.line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	gnl.line = ft_read(stat, gnl, fd);
@@ -97,7 +98,6 @@ char	*gnl_no_malloc(int fd)
 	}
 	return (gnl.line);
 }
-
 
 // int main()
 // {

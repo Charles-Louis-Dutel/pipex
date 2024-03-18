@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@42student.fr>               +#+  +:+       +#+        */
+/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 00:53:14 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/14 11:59:40 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:51:34 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static void	open_files_2(int argc, char **argv, t_pipex *ppx)
 {
-	ppx->error_with_file_1 = 0;
-	ppx->error_with_file_2 = 0;
 	ppx->fd1 = open(FILE_HD, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (access(FILE_HD, F_OK) >= 0)
 	{
@@ -26,9 +24,9 @@ static void	open_files_2(int argc, char **argv, t_pipex *ppx)
 		}
 	}
 	if (ppx->fd1 < 0 && ppx->error_with_file_1 == 0)
-			print_error_msg(ERR_FILE_DIR, FILE_HD);
+		print_error_msg(ERR_FILE_DIR, FILE_HD);
 	else if (!(ppx->fd1 < 0))
-			ft_putstr_fd(ppx->str_hd, ppx->fd1);
+		ft_putstr_fd(ppx->str_hd, ppx->fd1);
 	close(ppx->fd1);
 	ppx->fd1 = open(FILE_HD, O_RDWR);
 	if (ppx->str_hd)
@@ -59,7 +57,7 @@ static char	*get_here_doc(t_pipex ppx)
 	{
 		temp2 = dest;
 		temp = gnl_no_malloc(STDIN_FILENO);
-		if (!temp || ft_strncmp(ppx.limiter, temp, ft_strlen(ppx.limiter)) == 0)
+		if (!temp || ft_strncmp(temp, ppx.limiter, ft_strlen(ppx.limiter)) == 0)
 			break ;
 		dest = (ft_strjoin(temp2, temp));
 		free(temp);
@@ -68,24 +66,21 @@ static char	*get_here_doc(t_pipex ppx)
 	if (temp)
 		free (temp);
 	return (dest);
-	}
+}
 
 int	here_doc(int argc, char **argv, char **envp)
 {
 	t_pipex	ppx;
 	int		pipes[argc - 3][2];
 
-	ppx.str_hd = NULL;
-	ppx.limiter = argv[2];
+	ppx = init_ppx();
+	ppx.limiter = ft_strjoin(argv[2], "\n");
 	ppx.str_hd = get_here_doc(ppx);
 	ppx.pids = malloc(sizeof(int) * argc - 4);
-	ppx.cmd_number = CMD1HD;
-	ppx.cmd = NULL;
 	ppx.n_cmd_to_do = argc - 4;
 	open_files_2(argc, argv, &ppx);
 	open_pipes(pipes, argc - 3);
 	get_path(argc, argv, envp, &ppx);
-	ppx.i = 0;
 	while (ppx.i < argc - 4)
 	{
 		ppx.pids[ppx.i] = fork();
@@ -97,9 +92,7 @@ int	here_doc(int argc, char **argv, char **envp)
 	}
 	close_pipes(ppx, pipes);
 	ppx.exit_status = wait_for_childs(ppx, ppx.pid_to_wait);
-	free_all(ppx);
 	if (ppx.error_with_file_2 == 1)
-		return (1);
-	return (ppx.exit_status);
-	return (0);
+		return (free_all(ppx), 1);
+	return (free_all(ppx), ppx.exit_status);
 }

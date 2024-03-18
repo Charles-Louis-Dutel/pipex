@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:57:29 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/12 11:54:53 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:41:34 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	open_pipes(int pipes[][2], int taille)
 
 static void	open_files(int argc, char **argv, t_pipex *ppx)
 {
-	ppx->error_with_file_1 = 0;
-	ppx->error_with_file_2 = 0;
 	ppx->fd1 = open(argv[1], O_RDONLY);
 	if (access(argv[1], F_OK) >= 0)
 	{
@@ -86,14 +84,13 @@ int	without_here_doc(int argc, char **argv, char **envp)
 	t_pipex	ppx;
 	int		pipes[argc - 2][2];
 
+	ppx = init_ppx();
 	ppx.pids = malloc(sizeof(int) * argc - 3);
 	ppx.cmd_number = CMD1;
-	ppx.cmd = NULL;
 	ppx.n_cmd_to_do = argc - 3;
 	open_files(argc, argv, &ppx);
 	open_pipes(pipes, argc - 2);
 	get_path(argc, argv, envp, &ppx);
-	ppx.i = 0;
 	while (ppx.i < argc - 3)
 	{
 		ppx.pids[ppx.i] = fork();
@@ -105,8 +102,7 @@ int	without_here_doc(int argc, char **argv, char **envp)
 	}
 	close_pipes(ppx, pipes);
 	ppx.exit_status = wait_for_childs(ppx, ppx.pid_to_wait);
-	free_all(ppx);
 	if (ppx.error_with_file_2 == 1)
-		return (1);
-	return (ppx.exit_status);
+		return (free_all(ppx), 1);
+	return (free_all(ppx), ppx.exit_status);
 }

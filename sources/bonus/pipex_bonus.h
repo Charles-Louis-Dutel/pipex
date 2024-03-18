@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:50:11 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/12 10:36:26 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:16:13 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	free_all(t_pipex ppx);
 void	ft_le_xav(char **dest);
 void	close_pipes(t_pipex ppx, int pipes[][2]);
 int		wait_for_childs(t_pipex ppx, int pids);
+t_pipex	init_ppx(void);
 
 /*Without_here_doc*/
 int		without_here_doc(int argc, char **argv, char **envp);
@@ -91,8 +92,5 @@ int		check_acces(int argc, char **argv, t_pipex ppx);
 
 /*Here_doc*/
 int		here_doc(int argc, char **argv, char **envp);
-
-/*Child_for_hd*/
-void	childs_hd(t_pipex ppx, int pipes[][2], char **argv, char **envp);
 
 #endif
