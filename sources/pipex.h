@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:48:58 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/04 17:38:44 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:30:20 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define ERR_PATH "No PATH\n"
 # define ERR_PIPE "Error with pipe"
 # define ERR_FORK "Error with fork"
+# define ERR_EXEC "Error with execve\n"
 # define ERR_PERM "Permission denied: "
 # define ERR_FILE_DIR "No such file or directory: "
 # define ERR_CMD "Command not found: "

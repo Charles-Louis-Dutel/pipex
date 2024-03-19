@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 17:55:14 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 16:52:51 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:34:53 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,28 @@ static void	case_directory(t_pipex ppx, char **envp)
 	if (access(ppx.ar[0], F_OK | X_OK) != 0)
 		print_error_msg_3(ERR_PERM, ppx.ar[0], ppx, 126);
 	ppx.path = ppx.ar[0];
-	execve(ppx.path, ppx.ar, envp);
+	if (execve(ppx.path, ppx.ar, envp) < 0)
+	{
+		free_all(ppx);
+		print_error_msg_2(ERR_EXEC);
+	}
 }
 
 static void	case_command(t_pipex ppx, char **envp)
 {
 	ppx.path = get_command(ppx.path_tab, ppx.ar[0]);
+	if (ppx.ar[0][0] == '\0')
+	{
+		free(ppx.path);
+		print_error_msg_3(ERR_PERM, ppx.ar[0], ppx, 126);
+	}
 	if (!ppx.path)
 		print_error_msg_3(ERR_CMD, ppx.ar[0], ppx, 127);
-	execve(ppx.path, ppx.ar, envp);
+	if (execve(ppx.path, ppx.ar, envp) < 0)
+	{
+		free_all(ppx);
+		print_error_msg_2(ERR_EXEC);
+	}
 }
 
 void	child_number_one(t_pipex ppx, char **argv, char **envp)
@@ -66,7 +79,7 @@ void	child_number_one(t_pipex ppx, char **argv, char **envp)
 	close_pipes(ppx);
 	ppx.i = 0;
 	ppx.cmd = ft_split(argv[2], ' ');
-	if (argv[2][0] != ' ')
+	if (argv[2][0] != ' ' && argv[2][0] != '\0')
 	{
 		while (ppx.cmd[ppx.i])
 		{
@@ -90,7 +103,7 @@ void	child_number_two(t_pipex ppx, char **argv, char **envp)
 	close_pipes(ppx);
 	ppx.i = 0;
 	ppx.cmd = ft_split(argv[3], ' ');
-	if (argv[3][0] != ' ')
+	if (argv[3][0] != ' ' && argv[3][0] != '\0')
 	{
 		while (ppx.cmd[ppx.i])
 		{

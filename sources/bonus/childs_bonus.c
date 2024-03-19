@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:35:04 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 21:54:07 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:35:46 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,12 @@ void	case_directory(t_pipex ppx, char **envp)
 void	case_command(t_pipex ppx, char **envp)
 {
 	ppx.path = get_command(ppx.path_tab, ppx.ar[0]);
-	if (!ppx.path || ppx.ar[0][0] == '\0')
+	if (ppx.ar[0][0] == '\0')
+	{
+		free(ppx.path);
+		print_error_msg_3(ERR_PERM, ppx.ar[0], ppx, 126);
+	}
+	if (!ppx.path)
 		print_error_msg_3(ERR_CMD, ppx.ar[0], ppx, 127);
 	if (execve(ppx.path, ppx.ar, envp) < 0)
 	{
