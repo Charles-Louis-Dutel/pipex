@@ -37,16 +37,16 @@ static void	fd_and_pipe(int argc, char **argv, t_pipex *ppx)
 	ppx->error_with_file_1 = 0;
 	ppx->error_with_file_2 = 0;
 	ppx->fd1 = open(argv[1], O_RDONLY);
-	if (access(argv[1], F_OK) >= 0)
+	if (access(argv[1], F_OK) >= 0 && access(argv[1], F_OK | R_OK) < 0)
 	{
-		if (access(argv[1], F_OK | R_OK) < 0)
-		{
-			ppx->error_with_file_1 = 1;
-			print_error_msg(ERR_PERM, argv[1]);
-		}
+		ppx->error_with_file_1 = 1;
+		print_error_msg(ERR_PERM, argv[1]);
 	}
 	if (ppx->fd1 < 0 && ppx->error_with_file_1 == 0)
+	{
+		ppx->error_with_file_1 = 1;
 		print_error_msg(ERR_FILE_DIR, argv[1]);
+	}
 	ppx->fd2 = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (access(argv[argc - 1], F_OK | R_OK | W_OK) < 0)
 	{

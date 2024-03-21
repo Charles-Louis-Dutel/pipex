@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:57:29 by cdutel            #+#    #+#             */
-/*   Updated: 2024/03/18 21:34:14 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:30:59 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ static void	open_files(int argc, char **argv, t_pipex *ppx)
 		}
 	}
 	if (ppx->fd1 < 0 && ppx->error_with_file_1 == 0)
+	{
+		ppx->error_with_file_1 = 1;
 		print_error_msg(ERR_FILE_DIR, argv[1]);
+	}
 	ppx->fd2 = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (access(argv[argc - 1], F_OK | R_OK | W_OK) < 0)
 	{
@@ -83,7 +86,10 @@ static void	open_files(int argc, char **argv, t_pipex *ppx)
 		print_error_msg(ERR_PERM, argv[argc - 1]);
 	}
 	if (ppx->fd2 < 0 && ppx->error_with_file_2 == 0)
+	{
+		ppx->error_with_file_2 = 1;
 		print_error_msg(ERR_FILE_DIR, argv[argc - 1]);
+	}
 }
 
 int	without_here_doc(int argc, char **argv, char **envp)
